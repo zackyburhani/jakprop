@@ -36,6 +36,29 @@
           </script>
         <?php } ?>
 
+        <?php if ($this->session->flashdata('proses') == TRUE) { ?>
+          <script> 
+            setTimeout(function() {
+              swal({
+                      title: "Data Berhasil Diproses",
+                      type: "success"
+                    });
+                  }, 200);
+          </script>
+        <?php } ?>
+
+        <?php if ($this->session->flashdata('prosesGagal') == TRUE) { ?>
+           <script> 
+            setTimeout(function() {
+              swal({
+                      title: "Data Tidak Berhasil Diproses",
+                      type: "error"
+                    });
+                  }, 200);
+          </script>
+        <?php } ?>
+
+
       <div class="row">
         <div class="col-lg-12">
           <div class="panel panel-default">
@@ -48,7 +71,8 @@
                   <tr>
                     <th width="25px"><center>No. </center></th>
                     <th><center>Nama Property</center></th>
-                    <th> <center>Action</center> </th>
+                    <th width="100px"><center>Proses</center></th>
+                    <th width="270"> <center>Action</center> </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -57,6 +81,11 @@
                     <tr>
                       <td><center><?php echo $no++."."; ?></center></td>
                       <td><center><?php echo $data->nm_property; ?></center></td>
+                      <?php if($data->status == 0) { ?>
+                      <td><center><button onclick="proses(this)" value="<?php echo $data->kd_property ?>" class="btn btn-primary"><i class="fa fa-check"></i> Proses</button></center></td>
+                      <?php } else { ?>
+                      <td><center>-</center></td>
+                      <?php } ?>
                       <td>
                         <center>
                           <button class="btn btn-info" data-toggle="modal" data-target="#ModalInfoProperty<?php echo $data->kd_property ?>"><i class="fa fa-folder-open"></i> Detail</button>
@@ -177,6 +206,24 @@
 </div>
 <?php } ?>
 
+<script>
+function proses(a)
+{
+    var id= a.value;
+    swal({
+            title: "",
+            text: "Anda Yakin Ingin Memproses Data ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes !",
+            closeOnConfirm: false }, function()
+        {
+            $(location).attr('href','<?php echo base_url('admin/proses_property/')?>'+id);
+        }
+    );
+}
+ </script>
 
 <script>
 // $(function(){ TablesDatatables.init(); });

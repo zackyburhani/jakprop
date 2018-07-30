@@ -48,6 +48,22 @@ class Model_CRUD extends CI_Model {
 		return $checkupdate;
 	}
 
+	//proses status property
+	public function proses($kd_property)
+	{	$data = [
+			'status' => '1'
+		];
+		$checkupdate = false;
+		try{
+			$this->db->where('kd_property',$kd_property);
+			$this->db->update('property',$data);
+			$checkupdate = true;
+		}catch (Exception $ex) {
+			$checkupdate = false;
+		}
+		return $checkupdate;
+	}
+
 	//ambil semua data
 	public function getAll($table)
 	{

@@ -160,7 +160,7 @@ class Controller_Admin extends CI_Controller {
 	{	
 		$getAll = $this->Model_CRUD->getAll('property');
 		$data = [
-			'getAll' => $getAll,
+			'getAll' => $getAll
 		];
 		$this->load->view('admin/template/V_Header',$data);
 		$this->load->view('admin/template/V_Sidebar');
@@ -171,9 +171,11 @@ class Controller_Admin extends CI_Controller {
 	//halaman tambah property
 	public function tambah_data_property()
 	{	
+		$kd_property = $this->Model_CRUD->getKodeProperty();
 		$getAllKategori = $this->Model_CRUD->getAll('kategori');
 		$getAllFasilitas = $this->Model_CRUD->getAll('fasilitas');
 		$data = [
+			'kd_property' => $kd_property,
 			'getAllKategori' => $getAllKategori,
 			'getAllFasilitas' => $getAllFasilitas,
 		];
@@ -204,7 +206,7 @@ class Controller_Admin extends CI_Controller {
 	//simpan data Property
 	public function simpanProperty()
 	{
-		$kd_property = $this->Model_CRUD->getKodeProperty();
+		$kd_property = $this->input->post('kd_property');
 		$nm_property = $this->input->post('nm_property');
 		$alamat = $this->input->post('alamat');
 		$kecamatan = $this->input->post('kecamatan');
@@ -218,6 +220,7 @@ class Controller_Admin extends CI_Controller {
 		$angsuran = $this->input->post('angsuran');
 		$deskripsi = $this->input->post('deskripsi');
 		$kd_kategori = $this->input->post('kd_kategori');
+		$kd_fasilitas = $this->input->post('kd_fasilitas');
 		$status = '0';
 
 		$data = [
@@ -239,8 +242,20 @@ class Controller_Admin extends CI_Controller {
 			'tgl_input' => date("Y-m-d H:i:s")
 		];
 
-		$result = $this->Model_CRUD->simpan('property',$data);
-		if ($result){
+		$result1 = $this->Model_CRUD->simpan('property',$data);
+		
+		$baris = count($kd_fasilitas);
+		$q=0;
+		for($i=0; $i<$baris; $i++){
+			$data_detail = [
+				'kd_property' => $kd_property,
+				'kd_fasilitas' => $kd_fasilitas[$q++],
+				'jml_fasilitas' => $baris
+			];
+			$result2 = $this->Model_CRUD->simpan('detail_fasilitas',$data_detail);		
+		}
+
+		if ($result1 && $result2){
 			$this->session->set_flashdata('pesan','Data Berhasil Disimpan');
 	   		redirect('admin/property');
 		}else{
@@ -297,7 +312,7 @@ class Controller_Admin extends CI_Controller {
 		}
 	}
 
-	//hapus data kategori
+	//hapus data property
 	public function hapusProperty($id)
 	{ 
 		$result = $this->Model_CRUD->hapus('kd_property',$id,'property');
@@ -306,6 +321,89 @@ class Controller_Admin extends CI_Controller {
 		}else{
 			redirect('admin/property');
 		}
+	}
+
+	//proses data property
+	public function proses_data_property($id)
+	{ 
+		$result = $this->Model_CRUD->proses($id);
+		if ($result){
+			$this->session->set_flashdata('proses','Data Berhasil Diproses');
+			redirect('admin/property');
+		}else{
+			$this->session->set_flashdata('prosesGagal','Data Tidak Berhasil Diproses');
+			redirect('admin/property');
+		}
+	}
+
+	//halaman pengaturan akun admin
+	public function pengaturan_akun()
+	{ 	
+		$id = $this->session->username;
+		$akun = $this->Model_CRUD->getAll_fetch('admin','username',$id);
+
+		$data = [
+			'akun' => $akun
+		];
+
+		$this->load->view('admin/template/V_Header',$data);
+		$this->load->view('admin/template/V_Sidebar');
+		$this->load->view('admin/V_pengaturan');
+		$this->load->view('admin/template/V_Footer');	
+	}
+
+	//update akun admin
+	public function pengaturan_akun_update()
+	{ 	
+		$id = $this->input->post('id');
+		$username = $this->input->post('username');
+		$password = $this->input->post('password');
+		$repassword = $this->input->post('repassword');
+		$nama_admin = $this->input->post('nama_admin');
+		$email = $this->input->post('email');
+		$no_telp = $this->input->post('no_telp');
+
+
+		if($password != $repassword){
+			$this->session->set_flashdata('TidakCocok','Data Tidak Berhasil Disimpan');
+			redirect('admin/pengaturan');
+		}
+
+		if($password == null && $repassword == null) {
+			$data = [
+				'username' => $username,
+				'nama_admin' => ucwords($nama_admin),
+				'email' => $email,
+				'no_telp' => $no_telp,
+			];			
+		} else {
+			$data = [
+				'username' => $username,
+				'password' => md5($password),
+				'nama_admin' => ucwords($nama_admin),
+				'email' => $email,
+				'no_telp' => $no_telp,
+			];
+		}
+
+		$result = $this->Model_CRUD->update('id',$id,$data,'admin');
+		if ($result){
+
+			$newdata = [
+				'username'  => $username,
+				'name'  => $nama_admin,
+				'email'  => $email,
+			  ];
+			//set seassion
+			$this->session->set_userdata($newdata);
+
+			$this->session->set_flashdata('pesan','Data Berhasil Disimpan');
+	   		redirect('admin/pengaturan');
+		}else{
+			$this->session->set_flashdata('pesanGagal','Data Tidak Berhasil Disimpan');
+    		redirect('admin/pengaturan');
+		}
+
 	}
 
 }

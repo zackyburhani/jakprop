@@ -29,6 +29,7 @@
                 <div class="col-md-6">
                   <div class="form-group"><label>Nama Property</label>
                     <input required class="form-control required text-capitalize" data-placement="top" data-trigger="manual" type="text" name="nm_property">
+                    <input type="hidden" name="kd_property" value="<?php echo $kd_property ?>">
                   </div>
 
                   <div class="form-group">
@@ -99,9 +100,10 @@
                     <input required class="form-control required text-capitalize" data-placement="top" data-trigger="manual" type="text" name="angsuran">
                   </div>  
 
+                  <?php $q=1; ?>
                   <div class="form-group">
                     <label>Fasilitas</label>
-                    <select class="form-control select2" name="kd_fasilitas" style="width: 100%;">
+                    <select class="form-control select2" id="my_select2" multiple="multiple" name="kd_fasilitas[]" style="width: 100%;">
                       <?php foreach($getAllFasilitas as $fas){ ?>
                       <option value="<?php echo $fas->kd_fasilitas ?>"><?php echo $fas->nm_fasilitas; ?></option>
                       <?php } ?>
@@ -137,5 +139,3 @@
 
     </section>
   </div>
-  
-

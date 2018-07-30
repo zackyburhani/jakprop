@@ -60,8 +60,13 @@ $route['admin/kategori'] = 'Controller_Admin/kategori';
 $route['admin/property'] = 'Controller_Admin/property';
 $route['admin/tambah_property'] = 'Controller_Admin/tambah_data_property';
 $route['admin/ubah_property/(:any)'] = 'Controller_Admin/ubah_data_property/$1';
+$route['admin/proses_property/(:any)'] = 'Controller_Admin/proses_data_property/$1';
 
 //hapus
 $route['admin/hapus_fasilitas/(:any)'] = 'Controller_Admin/hapusFasilitas/$1';
 $route['admin/hapus_kategori/(:any)'] = 'Controller_Admin/hapusKategori/$1'; 
 $route['admin/hapus_property/(:any)'] = 'Controller_Admin/hapusProperty/$1'; 
+
+//pengaturan akun
+$route['admin/pengaturan'] = 'Controller_Admin/pengaturan_akun';
+$route['admin/update_akun'] = 'Controller_Admin/pengaturan_akun_update';

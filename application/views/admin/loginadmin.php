@@ -16,6 +16,8 @@
   <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE/dist/css/AdminLTE.min.css')?>">
   <!-- iCheck -->
   <link rel="stylesheet" href="<?php echo base_url('assets/AdminLTE/plugins/iCheck/square/blue.css')?>">
+  <!-- Sweet Alert -->
+  <link rel="stylesheet" href="<?php echo base_url('assets/css/sweetalert.css')?>">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -28,6 +30,32 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition login-page">
+
+  <?php if ($this->session->flashdata('pesanGagal') == TRUE) { ?>
+    <script> 
+      setTimeout(function() {
+        swal({
+          title: "",
+          text: "Username Dan Password Anda Salah",
+          type: "error"
+        });
+      }, 200);
+    </script>
+  <?php } ?>
+
+  <?php if ($this->session->flashdata('pesan') == TRUE) { ?>
+    <script> 
+      setTimeout(function() {
+        swal({
+          title: "",
+          text: "Data Berhasil Diubah",
+          type: "success"
+        });
+      }, 200);
+    </script>
+  <?php } ?>
+
+
 <div class="login-box">
   <div class="login-logo">
     <a href="../../index2.html"><b>Admin</b>LTE</a>
@@ -83,6 +111,8 @@
 <script src="<?php echo base_url('assets/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js')?>"></script>
 <!-- iCheck -->
 <script src="<?php echo base_url('assets/AdminLTE/plugins/iCheck/icheck.min.js')?>"></script>
+<!-- Sweet Alert -->
+<script src="<?php echo base_url('assets/js/sweetalert.min.js')?>"></script>
 <script>
   $(function () {
     $('input').iCheck({

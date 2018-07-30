@@ -24,14 +24,13 @@ class Controller_Login extends CI_Controller {
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 
+		$password = md5($password);
 		$checkUsername = $this->M_Login->readUsername($username,$password);
 
 		if($checkUsername == NULL){
 
-			echo "<script type='text/javascript'>
-               alert ('Maaf Username Dan Password Anda Salah !');
-               window.location.replace('index');
-      			</script>";
+			$this->session->set_flashdata('pesanGagal','Data Tidak Berhasil Disimpan');
+			redirect('admin');
 
 		}else{
 			$newdata = array(

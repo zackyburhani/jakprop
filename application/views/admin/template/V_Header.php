@@ -47,16 +47,16 @@
 <!--   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"> -->
 </head>
-<body class="hold-transition skin-green sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
     <!-- Logo -->
     <a href="../../index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>J</b>P</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>Jakarta</b> Property</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -67,10 +67,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
+      <ul class="nav navbar-nav">
+          <li>
+            <label style="color: white; font-size: 15px; margin-top: 15px; margin-right: 15px;">
+            <span id="dates"><span id="the-day">Hari, 00 Bulan 0000</span> <span id="the-time">00:00:00</span>
+            </span></label>
+          </li>
+      </ul>
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-        
           <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -116,10 +122,10 @@
           </li>
         
           <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu">
+          <li class="dropdown user user-menu" style="margin-right: 50px">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<?php echo base_url('assets/AdminLTE/dist/img/user2-160x160.jpg')?>" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs"><?php echo ucwords($this->session->name); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -127,29 +133,14 @@
                 <img src="<?php echo base_url('assets/AdminLTE/dist/img/user2-160x160.jpg')?>" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  <?php echo ucwords($this->session->name); ?>
+                  <small><i>Administrator</i></small>
                 </p>
-              </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
-                </div>
-                <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="<?php echo site_url('admin/pengaturan') ?>" class="btn btn-default btn-flat">Pengaturan</a>
                 </div>
                 <div class="pull-right">
                   <a href="<?php echo site_url('Controller_Login/logout') ?>" class="btn btn-default btn-flat">Sign out</a>
@@ -157,10 +148,7 @@
               </li>
             </ul>
           </li>
-          <!-- Control Sidebar Toggle Button -->
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
+          
         </ul>
       </div>
     </nav>
