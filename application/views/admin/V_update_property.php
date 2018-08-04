@@ -18,7 +18,7 @@
       <div class="row">
         <div class="col-md-12">
 
-          <div class="box box-danger">
+          <div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">Data Property</h3>
               <hr style="margin-bottom: -5px">
@@ -113,8 +113,56 @@
                   <div class="form-group"><label>Deskripsi</label>
                     <textarea name="deskripsi" class="form-control"><?php echo $getAll_fetch->deskripsi ?></textarea>
                   </div>
-                </div>
 
+                  <div class="form-group">
+                  <label>Gambar</label>
+                    <div class="input-group">
+                      <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                          Upload Gambar <input type="file" name="files[]" multiple="multiple" accept="image/png, image/jpeg, image/jpg," id="imgInp">
+                        </span>
+                      </span>
+                        <input id='urlname' type="text" class="form-control" readonly>
+                    </div>
+                  </div>
+
+                  <div class="box box-solid">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Carousel</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                          <?php $total = $this->Model_CRUD->get_gambar($getAll_fetch->kd_property); ?>
+                          <?php $i=1; ?>
+                          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                          <?php foreach($total as $key){ ?>
+                          <li data-target="#carousel-example-generic" data-slide-to="<?php echo $i++ ?>" class=""></li>
+                          <?php } ?>
+                        </ol>
+                        <?php $gambar = $this->Model_CRUD->get_gambar($getAll_fetch->kd_property); ?>
+                        <?php foreach($gambar as $key){ ?>
+                        <div class="carousel-inner">    
+                          <div class="item active">                     
+                            <img src="<?php echo site_url('assets/img/customer/'.$getAll_fetch->kd_property.'/'.$key->img) ?>" alt="First slide">
+                            <div class="carousel-caption">
+                              First Slide
+                            </div>
+                          </div>
+                        </div>
+                        <?php }  ?>
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                          <span class="fa fa-angle-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                          <span class="fa fa-angle-right"></span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
             <div class="box-footer" style="margin-bottom: 100px">

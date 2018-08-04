@@ -77,6 +77,11 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <li class="dropdown notifications-menu">
+            <a href="<?php echo site_url('') ?>" >
+              <i class="fa fa-eye"></i> Pratinjau
+            </a>
+          </li>
           <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

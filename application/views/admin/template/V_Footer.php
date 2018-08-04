@@ -8,8 +8,6 @@
 <script src="<?php echo base_url('assets/AdminLTE/bower_components/jquery/dist/jquery.min.js')?>"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?php echo base_url('assets/AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js')?>"></script>
-<!-- Select2 -->
-<script src="<?php echo base_url('assets/AdminLTE/bower_components/select2/dist/js/select2.full.min.js')?>"></script>
 <!-- InputMask -->
 <script src="<?php echo base_url('assets/AdminLTE/plugins/input-mask/jquery.inputmask.js')?>"></script>
 <script src="<?php echo base_url('assets/AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js')?>"></script>
@@ -35,6 +33,18 @@
 <script src="<?php echo base_url('assets/AdminLTE/dist/js/demo.js')?>"></script>
 
 <script src="<?php echo base_url('assets/js/sweetalert.min.js')?>"></script>
+
+<script src="<?php echo base_url('assets/js/jquery-1.10.2.min.js') ?>"></script>
+<script src="<?php echo base_url('assets/js/jquery.chained.min.js') ?>"></script>
+
+<script src="<?php echo base_url('assets/js/upload.js')?>"></script>
+
+<!-- Select2 -->
+<script src="<?php echo base_url('assets/AdminLTE/bower_components/select2/dist/js/select2.full.min.js')?>"></script>
+<script>
+  $("#kabupaten").chained("#provinsi");
+  $("#kecamatan").chained("#kabupaten");
+</script>
 
 <!-- DataTables -->
 <script src="<?php echo base_url('assets/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js')?>"></script>
@@ -191,6 +201,8 @@ $(document).ready( function () {
     else if(num == 11) return 'Desember';
   }
 </script>
+
+
 
 </body>
 </html>

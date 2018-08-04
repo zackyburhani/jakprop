@@ -71,12 +71,42 @@ class Model_CRUD extends CI_Model {
 		return $result->result();
 	}
 
+	//ambil data provinsi
+	public function get_provinsi()
+    {
+        $this->db->order_by('name', 'asc');
+        return $this->db->get('provinces')->result();
+    }
+
+    //ambil data kabupaten
+    public function get_kabupaten()
+    {
+    	$this->db->order_by('regencies.name', 'asc');
+        $this->db->join('regencies', 'regencies.province_id = provinces.id');
+        return $this->db->get('provinces')->result();
+    }
+
+    //ambil data kecamatan
+    public function get_kecamatan()
+    {
+   	    $this->db->order_by('districts.name', 'asc');
+        $this->db->join('districts', 'districts.regency_id = regencies.id');
+        return $this->db->get('regencies')->result();
+    }
+
 	//ambil data untuk fetch
 	public function getAll_fetch($table,$pk,$id)
 	{	
 		$result = $this->db->query("SELECT * FROM $table WHERE $pk = '$id'");
 		return $result->row();
 	}
+
+	//ambil data gammbar
+    public function get_gambar($kd_property)
+    {
+   	    $this->db->where('kd_property',$kd_property);
+        return $this->db->get('gambar')->result();
+    }
 
 	//join table untuk detail property
 	public function getJoin($id)

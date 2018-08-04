@@ -174,14 +174,21 @@ class Controller_Admin extends CI_Controller {
 		$kd_property = $this->Model_CRUD->getKodeProperty();
 		$getAllKategori = $this->Model_CRUD->getAll('kategori');
 		$getAllFasilitas = $this->Model_CRUD->getAll('fasilitas');
+		$getAllKecamatan = $this->Model_CRUD->getAll('districts');
 		$data = [
+			'provinsi' => $this->Model_CRUD->get_provinsi(),
+            'kabupaten' => $this->Model_CRUD->get_kabupaten(),
+            'kecamatan' => $this->Model_CRUD->get_kecamatan(),
+            'provinsi_selected' => '',
+            'kabupaten_selected' => '',
+            'kecamatan_selected' => '',
 			'kd_property' => $kd_property,
 			'getAllKategori' => $getAllKategori,
 			'getAllFasilitas' => $getAllFasilitas,
 		];
 		$this->load->view('admin/template/V_Header',$data);
 		$this->load->view('admin/template/V_Sidebar');
-		$this->load->view('admin/V_tambah_property');
+		$this->load->view('admin/V_tambah_property',$data);
 		$this->load->view('admin/template/V_Footer');
 	}
 
@@ -243,7 +250,47 @@ class Controller_Admin extends CI_Controller {
 		];
 
 		$result1 = $this->Model_CRUD->simpan('property',$data);
-		
+			
+		$nama_file = md5(uniqid(rand(), true));
+		$path = './assets/img/customer/'.$kd_property;
+		mkdir($path); 
+		$data = array();
+        // If file upload form submitted
+        if(!empty($_FILES['files']['name'])){
+            $filesCount = count($_FILES['files']['name']);
+            for($i = 0; $i < $filesCount; $i++){
+                $_FILES['file']['name'] = $_FILES['files']['name'][$i];
+                $_FILES['file']['type'] = $_FILES['files']['type'][$i];
+                $_FILES['file']['tmp_name'] = $_FILES['files']['tmp_name'][$i];
+                $_FILES['file']['error'] = $_FILES['files']['error'][$i];
+                $_FILES['file']['size'] = $_FILES['files']['size'][$i];
+                
+                // File upload configuration
+                $uploadPath = $path;
+                $config['upload_path'] = $uploadPath;
+                $config['allowed_types'] = 'jpg|jpeg|png';
+                $config['file_name'] = $nama_file.$i;
+                
+                // Load and initialize upload library
+                $this->load->library('upload', $config);
+                $this->upload->initialize($config);
+                
+                // Upload file to server
+                if($this->upload->do_upload('file')){
+                    // Uploaded file data
+                    $fileData = $this->upload->data();
+                    $uploadData[$i]['file_name'] = $fileData['file_name'];
+                    $uploadData[$i]['uploaded_on'] = date("Y-m-d H:i:s");
+
+               		$data_gambar = [
+						'img' => $uploadData[$i]['file_name'],
+						'kd_property' => $kd_property
+					];
+					$result2 = $this->Model_CRUD->simpan('gambar',$data_gambar);
+                }
+            }
+        }
+
 		$baris = count($kd_fasilitas);
 		$q=0;
 		for($i=0; $i<$baris; $i++){
@@ -252,16 +299,16 @@ class Controller_Admin extends CI_Controller {
 				'kd_fasilitas' => $kd_fasilitas[$q++],
 				'jml_fasilitas' => $baris
 			];
-			$result2 = $this->Model_CRUD->simpan('detail_fasilitas',$data_detail);		
+			$result3 = $this->Model_CRUD->simpan('detail_fasilitas',$data_detail);		
 		}
 
-		if ($result1 && $result2){
+		if ($result1 && $result2 && $result3){
 			$this->session->set_flashdata('pesan','Data Berhasil Disimpan');
-	   		redirect('admin/property');
+		   	redirect('admin/property');
 		}else{
 			$this->session->set_flashdata('pesanGagal','Data Tidak Berhasil Disimpan');
     		redirect('admin/property');
-		}
+		}     	
 	}
 
 	//ubah data kategori
@@ -315,6 +362,21 @@ class Controller_Admin extends CI_Controller {
 	//hapus data property
 	public function hapusProperty($id)
 	{ 
+		//hapus file gambar
+        $this->db->where('gambar.kd_property',$id);
+        $this->db->join('gambar', 'gambar.kd_property = property.kd_property');
+        $ambil = $this->db->get('property');
+        $gambar = $ambil->result();
+        foreach ($gambar as $key) {
+        	unlink("./assets/img/customer/$key->kd_property/$key->img");
+        }
+
+        //hapus folder
+        $this->db->where('kd_property',$id);
+        $ambil2 = $this->db->get('property');
+        $gambar2 = $ambil2->row();
+       	rmdir("./assets/img/customer/$gambar2->kd_property");
+
 		$result = $this->Model_CRUD->hapus('kd_property',$id,'property');
 		if ($result){
 			redirect('admin/property');

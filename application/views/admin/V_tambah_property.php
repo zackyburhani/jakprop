@@ -14,11 +14,11 @@
 
     <!-- Main content -->
     <section class="content">
-      <form action="<?php echo site_url('Controller_Admin/simpanProperty') ?>" method="POST">
+      <form action="<?php echo site_url('Controller_Admin/simpanProperty') ?>" method="POST" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-12">
 
-          <div class="box box-danger">
+          <div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">Data Property</h3>
               <hr style="margin-bottom: -5px">
@@ -46,29 +46,32 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Kecamatan</label>
-                    <select class="form-control select2" name="kecamatan" style="width: 100%;">
-                      <option selected="selected">Alabama</option>
-                      <option>Alaska</option>
-                      <option>California</option>
+                    <label>Provinsi</label>
+                    <select class="form-control select2" name="provinsi" id="provinsi">
+                      <option value="">Please Select</option>    
+                      <?php foreach ($provinsi as $prov) { ?>
+                      <option <?php echo $provinsi_selected == $prov->id ? 'selected="selected"' : '' ?> value="<?php echo $prov->id ?>"><?php echo $prov->name ?></option>
+                      <?php } ?>
                     </select>
                   </div>
 
                   <div class="form-group">
                     <label>Kabupaten</label>
-                    <select class="form-control select2" name="kabupaten" style="width: 100%;">
-                      <option selected="selected">Alabama</option>
-                      <option>Alaska</option>
-                      <option>California</option>
+                    <select class="form-control select2" name="kabupaten" id="kabupaten">
+                      <option value="">Please Select</option>      
+                      <?php foreach ($kabupaten as $kot) { ?>
+                      <option <?php echo $kabupaten_selected == $kot->province_id ? 'selected="selected"' : '' ?> class="<?php echo $kot->province_id ?>" value="<?php echo $kot->id ?>"><?php echo $kot->name ?></option>
+                      <?php } ?>
                     </select>
                   </div>
 
                   <div class="form-group">
-                    <label>Provinsi</label>
-                    <select class="form-control select2" name="provinsi" style="width: 100%;">
-                      <option selected="selected">Alabama</option>
-                      <option>Alaska</option>
-                      <option>California</option>
+                    <label>Kecamatan</label>
+                    <select class="form-control select2" name="kecamatan" id="kecamatan">
+                      <option value="">Please Select</option>
+                      <?php foreach ($kecamatan as $kec) { ?>
+                      <option <?php echo $kecamatan_selected == $kec->regency_id ? 'selected="selected"' : '' ?> class="<?php echo $kec->regency_id ?>" value="<?php echo $kec->id ?>"><?php echo $kec->name ?></option>
+                      <?php } ?>
                     </select>
                   </div>
 
@@ -113,8 +116,20 @@
                   <div class="form-group"><label>Deskripsi</label>
                     <textarea name="deskripsi" class="form-control"></textarea>
                   </div>
-                </div>
 
+                  <div class="form-group">
+                  <label>Gambar</label>
+                    <div class="input-group">
+                      <span class="input-group-btn">
+                        <span class="btn btn-default btn-file">
+                          Upload Gambar <input type="file" name="files[]" multiple="multiple" accept="image/png, image/jpeg, image/jpg," id="imgInp">
+                        </span>
+                      </span>
+                        <input id='urlname' type="text" class="form-control" readonly>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </div>
             <div class="box-footer" style="margin-bottom: 100px">
@@ -139,3 +154,25 @@
 
     </section>
   </div>
+
+  <script type="text/javascript">
+    function formatangka_titik()
+{
+    a = form1.harga.value;
+    b = a.replace(/[^\d]/g,"");
+    c = "";
+    panjang = b.length;
+    j = 0;
+    for (i = panjang; i > 0; i--)
+    {
+    j = j + 1;
+    if (((j % 3) == 1) && (j != 1))
+     {
+    c = b.substr(i-1,1) + "." + c;
+    } else {
+    c = b.substr(i-1,1) + c;
+    }
+    }
+  form1.harga.value = c;
+}
+  </script>
